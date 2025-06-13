@@ -1,0 +1,7 @@
+streamlit
+pandas
+openai
+requests
+matplotlib
+numpy
+investpy
