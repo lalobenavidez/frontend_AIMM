@@ -346,25 +346,7 @@ with col3:
 
 import matplotlib.pyplot as plt
 
-# --- Título y datos de ejemplo (usa tus propios datos reales) ---
-st.markdown("""
-<div style="background-color:#1e2533; padding: 28px 32px 32px 32px; border-radius: 18px; margin-bottom: 20px;">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div>
-            <span style="font-size:2.2rem; font-weight:700; color:white;">AAPL</span>
-            <span style="font-size:2.2rem; font-weight:700; color:#4ade80; margin-left:8px;">$182.63</span><br>
-            <span style="font-size:1.1rem; color:#cbd5e1;">Apple Inc. • NASDAQ</span>
-        </div>
-        <div>
-            <span style="margin-right:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">1D</span>
-            <span style="margin-right:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">1S</span>
-            <span style="background:#3b82f6; padding:7px 16px; border-radius:8px; color:white; font-weight:600;">1M</span>
-            <span style="margin-left:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">3M</span>
-            <span style="margin-left:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">1A</span>
-            <span style="margin-left:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">5A</span>
-        </div>
-    </div>
-""", unsafe_allow_html=True)
+
 
 # --- Simula tus precios. En la vida real usa tu dataframe de precios! ---
 import numpy as np
@@ -424,8 +406,8 @@ def seccion_html(titulo, contenido, emoji):
 
 col_izq, col_der = st.columns([1.2, 1])  # Puedes ajustar la proporción si quieres
 
-with col_izq:
-    st.markdown(seccion_html("Resumen Técnico", bloques.get(1, ""), "🤖"), unsafe_allow_html=True)
+with col_der:
+    st.markdown(seccion_html("Resultados completos de la AI", bloques.get(1, ""), "🤖"), unsafe_allow_html=True)
     st.markdown(seccion_html("Proyección de Precios Target y Stop Loss", bloques.get(4, ""), "🎯"), unsafe_allow_html=True)
     st.markdown(seccion_html("Probabilidad de Subida o Bajada", bloques.get(3, ""), "📊"), unsafe_allow_html=True)
     # Agregar la conclusión al final de la evaluación si existe
@@ -438,9 +420,9 @@ with col_izq:
 
 
 
-with col_der:
-    st.markdown("#### 📊 Price, Target y Stop (Visualización Rápida)")
-    if st.button("📊 Mostrar gráfica de proyección"):
+with col_izq:
+    st.markdown("#### 📊 Price, Target y Stop")
+    if st.button("📊 Ver gráfica de proyección"):
         conclusion_json = st.session_state.get('conclusion_json', None)
         if conclusion_json:
             # Extrae los valores y asegúrate que son floats
@@ -584,6 +566,26 @@ if st.button("🕘 Mostrar último análisis"):
         st.markdown("</div>", unsafe_allow_html=True)
     else:
         st.warning("No hay ningún análisis guardado todavía.")
+
+# --- Título y datos de ejemplo (usa tus propios datos reales) ---
+st.markdown("""
+<div style="background-color:#1e2533; padding: 28px 32px 32px 32px; border-radius: 18px; margin-bottom: 20px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <span style="font-size:2.2rem; font-weight:700; color:white;">AAPL</span>
+            <span style="font-size:2.2rem; font-weight:700; color:#4ade80; margin-left:8px;">$182.63</span><br>
+            <span style="font-size:1.1rem; color:#cbd5e1;">Apple Inc. • NASDAQ</span>
+        </div>
+        <div>
+            <span style="margin-right:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">1D</span>
+            <span style="margin-right:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">1S</span>
+            <span style="background:#3b82f6; padding:7px 16px; border-radius:8px; color:white; font-weight:600;">1M</span>
+            <span style="margin-left:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">3M</span>
+            <span style="margin-left:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">1A</span>
+            <span style="margin-left:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">5A</span>
+        </div>
+    </div>
+""", unsafe_allow_html=True)        
 
         # --- Gráfica tipo análisis técnico ---
 fig, ax = plt.subplots(figsize=(8.5, 4))
