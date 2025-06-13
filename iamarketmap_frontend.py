@@ -317,6 +317,24 @@ with col2:
     if ticker != st.session_state['selected_ticker']:
         st.session_state['selected_ticker'] = ticker
 
+    if st.button("🔍 Obtener análisis", key="analisis_btn"):
+    with st.spinner("Market Map AI is Generating the Analysis"):
+        data, resultado = obtener_datos_y_analisis(ticker, selected_interval)
+        bloques, conclusion_text = extract_numbered_blocks(resultado)
+        conclusion_json = extraer_conclusion_json(resultado)
+        st.session_state['ultimo_analisis'] = (data, resultado)
+        st.session_state['bloques'] = bloques
+        st.session_state['conclusion'] = conclusion_text
+        st.session_state['conclusion_json'] = conclusion_json
+        st.write("DEBUG - Texto de conclusión:", repr(conclusion_text))
+        st.write("DEBUG - JSON de conclusión:", conclusion_json)
+        # Actualiza variables locales también, para el render inmediato
+        conclusion = conclusion_text
+elif 'bloques' in st.session_state:
+    bloques = st.session_state['bloques']
+    conclusion = st.session_state.get('conclusion', "")
+    conclusion_json = st.session_state.get('conclusion_json', None)
+
 with col3:
     st.markdown("**Temporalidad**", unsafe_allow_html=True)
     selected_interval = st.radio(
@@ -378,23 +396,7 @@ conclusion_json = None
 # Cuando obtienes el resultado, haz:
 
 
-if st.button("🔍 Obtener análisis", key="analisis_btn"):
-    with st.spinner("Market Map AI is Generating the Analysis"):
-        data, resultado = obtener_datos_y_analisis(ticker, selected_interval)
-        bloques, conclusion_text = extract_numbered_blocks(resultado)
-        conclusion_json = extraer_conclusion_json(resultado)
-        st.session_state['ultimo_analisis'] = (data, resultado)
-        st.session_state['bloques'] = bloques
-        st.session_state['conclusion'] = conclusion_text
-        st.session_state['conclusion_json'] = conclusion_json
-        st.write("DEBUG - Texto de conclusión:", repr(conclusion_text))
-        st.write("DEBUG - JSON de conclusión:", conclusion_json)
-        # Actualiza variables locales también, para el render inmediato
-        conclusion = conclusion_text
-elif 'bloques' in st.session_state:
-    bloques = st.session_state['bloques']
-    conclusion = st.session_state.get('conclusion', "")
-    conclusion_json = st.session_state.get('conclusion_json', None)
+
 
 st.markdown("</div>", unsafe_allow_html=True)
 
