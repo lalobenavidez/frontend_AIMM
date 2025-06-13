@@ -355,8 +355,6 @@ with col2:
             st.session_state['bloques'] = bloques
             st.session_state['conclusion'] = conclusion_text
             st.session_state['conclusion_json'] = conclusion_json
-            st.write("DEBUG - Texto de conclusión:", repr(conclusion_text))
-            st.write("DEBUG - JSON de conclusión:", conclusion_json)
             conclusion = conclusion_text
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -386,14 +384,6 @@ with col3:
         }
         </style>
     """, unsafe_allow_html=True)
-
-# Este bloque va FUERA de las columnas (no indentado dentro del with col2/col3)
-
-if st.session_state['ultimo_analisis']:
-    st.markdown("---")
-    st.write("DEBUG - Resultado crudo recibido:")
-    st.write(st.session_state['ultimo_analisis'][1])
-    st.markdown("---")
 
 
 
@@ -459,7 +449,7 @@ with col_der:
     if conclusion:
         eval_content += "\n\n" + conclusion
     st.markdown(seccion_html("Evaluación de Riesgo/Beneficio", eval_content, "⚖️"), unsafe_allow_html=True)
-    st.text(f"Conclusión (debug): {conclusion}")
+    
 
 
 
