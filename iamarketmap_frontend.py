@@ -292,6 +292,8 @@ st.markdown(
 
 col1, col2, col3 = st.columns([5, 2, 4])
 
+
+
 with col1:
     st.markdown("**Activos**", unsafe_allow_html=True)
     for symbol, change in ticker_changes.items():
@@ -306,6 +308,14 @@ with col1:
             st.session_state['selected_ticker'] = symbol
 
 with col2:
+    st.markdown("**Temporalidad**", unsafe_allow_html=True)
+    selected_interval = st.radio(
+        "",
+        ["15M", "1H", "1D", "1W", "1M"],
+        key="interval_radio",
+        horizontal=True,
+    )
+
     st.markdown("**Ticker**", unsafe_allow_html=True)
     ticker = st.selectbox(
         "",
