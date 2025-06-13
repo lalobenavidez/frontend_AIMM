@@ -392,32 +392,24 @@ if 'bloques' in st.session_state:
     bloques = st.session_state['bloques']
     conclusion = st.session_state.get('conclusion', "")
     conclusion_json = st.session_state.get('conclusion_json', None)
+else:
+    bloques = {}
+    conclusion = ""
+    conclusion_json = None
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-
-
 import matplotlib.pyplot as plt
 
-
-
-# --- Simula tus precios. En la vida real usa tu dataframe de precios! ---
+# --- Simula tus precios...
 import numpy as np
 import pandas as pd
 np.random.seed(1)
 dias = pd.date_range("2024-03-08", "2024-06-06", freq="B")
 precios = np.cumsum(np.random.normal(0.6, 1.1, len(dias))) + 164
 
-
-# Inicializa variables para que nunca estén indefinidas
-bloques = {}
-conclusion = ""
-conclusion_json = None
-
-
-# ================== ...tu código y UI arriba... ==================
-
 # ========== ZONA DE RESULTADOS Y GRÁFICA EN DOS COLUMNAS ==========
+
 
 
 # Justo antes de los bloques de sección:
