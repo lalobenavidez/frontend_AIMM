@@ -80,7 +80,7 @@ import requests
 @st.cache_data(ttl=3600)
 def obtener_datos_y_analisis(ticker, selected_interval):
     # Cambia la URL si tu backend está en otro host/puerto
-        url = "https://backendaimm-production.up.railway.app/analizar"
+    url = "https://backendaimm-production.up.railway.app/analizar"
     payload = {
         "ticker": ticker,
         "intervalo": selected_interval
@@ -95,6 +95,7 @@ def obtener_datos_y_analisis(ticker, selected_interval):
             return None, f"Error en API: {response.text}"
     except Exception as e:
         return None, f"Error conectando con backend: {e}"
+
 
 
 
