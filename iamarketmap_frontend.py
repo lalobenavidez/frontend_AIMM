@@ -281,8 +281,12 @@ ticker_changes = {
     "TSLA": "+2.3%"
 }
 tickers = list(ticker_changes.keys())
+
+# Abre el panel contenedor visual, justo después del título
 st.markdown(
-    "<div style='background-color:#1e2533; padding:28px 32px 32px 32px; border-radius:18px; margin-bottom:24px;'>",
+    """
+    <div style='background-color:#232f45; padding:32px 36px 36px 36px; border-radius:22px; margin-bottom:32px; margin-top:12px;'>
+    """, 
     unsafe_allow_html=True
 )
 
@@ -321,7 +325,6 @@ with col3:
         key="interval_radio",
         horizontal=True,
     )
-
 
     # Forzamos visualmente el botón seleccionado con CSS dinámico
     st.markdown(f"""
@@ -612,3 +615,9 @@ plt.xticks(
 plt.yticks(fontsize=7)
 
 st.pyplot(fig)
+
+#comandos de actuallizacion en visul termina
+#git add iamarketmap_frontend.py
+#git commit -m "Mensaje de actualización"
+#git push
+
