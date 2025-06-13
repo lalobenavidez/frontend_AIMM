@@ -469,24 +469,30 @@ with col_izq:
     if st.button("📊 Ver gráfica de proyección"):
         conclusion_json = st.session_state.get('conclusion_json', None)
         if conclusion_json:
-            # Extrae los valores y asegúrate que son floats
             last = float(conclusion_json.get('last_price'))
             target = float(conclusion_json.get('probable_target'))
             stop = float(conclusion_json.get('probable_stop'))
 
-            # Normalización visual:
-            last_y = 0.5    # Last siempre al 50%
-            target_y = 0.9  # Target siempre al 90% (arriba)
-            dist_target = target - last
-            dist_stop = last - stop
+            last_y = 0.5  # Siempre al centro
 
-            if dist_target == 0:
-                pos_stop = 0.1  # Si target == last, lo mandamos abajo
-            else:
-                # Stop relativo, cuanto más lejos esté del last, más abajo lo ubicamos
-                pos_stop = last_y - (dist_stop / dist_target) * (target_y - last_y)
-                # Limita a un rango lógico
-                pos_stop = max(0.1, min(pos_stop, 0.49))
+            if target > last:  # Escenario alcista
+                target_y = 0.9  # Target cerca del margen superior
+                dist_target = target - last
+                dist_stop = last - stop
+                if dist_target == 0:
+                    pos_stop = 0.1
+                else:
+                    pos_stop = last_y - (dist_stop / dist_target) * (target_y - last_y)
+                    pos_stop = max(0.1, min(pos_stop, 0.49))
+            else:  # Escenario bajista
+                target_y = 0.1  # Target cerca del margen inferior
+                dist_target = last - target
+                dist_stop = stop - last
+                if dist_target == 0:
+                    pos_stop = 0.9
+                else:
+                    pos_stop = last_y - (dist_stop / dist_target) * (last_y - target_y)
+                    pos_stop = min(0.9, max(pos_stop, 0.51))
 
             y_vals = [pos_stop, last_y, target_y]
             labels = [
@@ -513,6 +519,7 @@ with col_izq:
             st.pyplot(fig2)
         else:
             st.warning("No se pudo extraer el bloque JSON de la conclusión para graficar.")
+
 
     # Bloque de métricas bajo el gráfico:
     conclusion_json = st.session_state.get('conclusion_json', None)
