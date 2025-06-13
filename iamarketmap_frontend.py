@@ -290,7 +290,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-#st.markdown("<div class='symbol-card'>", unsafe_allow_html=True)
 col1, col2, col3 = st.columns([5, 2, 4])
 
 with col1:
@@ -317,23 +316,40 @@ with col2:
     if ticker != st.session_state['selected_ticker']:
         st.session_state['selected_ticker'] = ticker
 
-    if st.button("🔍 Obtener análisis", key="analisis_btn"):
-    with st.spinner("Market Map AI is Generating the Analysis"):
-        data, resultado = obtener_datos_y_analisis(ticker, selected_interval)
-        bloques, conclusion_text = extract_numbered_blocks(resultado)
-        conclusion_json = extraer_conclusion_json(resultado)
-        st.session_state['ultimo_analisis'] = (data, resultado)
-        st.session_state['bloques'] = bloques
-        st.session_state['conclusion'] = conclusion_text
-        st.session_state['conclusion_json'] = conclusion_json
-        st.write("DEBUG - Texto de conclusión:", repr(conclusion_text))
-        st.write("DEBUG - JSON de conclusión:", conclusion_json)
-        # Actualiza variables locales también, para el render inmediato
-        conclusion = conclusion_text
-elif 'bloques' in st.session_state:
-    bloques = st.session_state['bloques']
-    conclusion = st.session_state.get('conclusion', "")
-    conclusion_json = st.session_state.get('conclusion_json', None)
+    # Botón color morado y ancho completo
+    st.markdown("""
+        <style>
+        .morado-col2 > button {
+            background-color: #a78bfa !important;
+            color: white !important;
+            border-radius: 12px !important;
+            border: none !important;
+            width: 100%;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 22px;
+            transition: background 0.3s;
+        }
+        .morado-col2 > button:hover {
+            background-color: #7c3aed !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="morado-col2">', unsafe_allow_html=True)
+    if st.button("🔮 Obtener análisis", key="analisis_btn_col2"):
+        with st.spinner("Market Map AI is Generating the Analysis"):
+            data, resultado = obtener_datos_y_analisis(ticker, selected_interval)
+            bloques, conclusion_text = extract_numbered_blocks(resultado)
+            conclusion_json = extraer_conclusion_json(resultado)
+            st.session_state['ultimo_analisis'] = (data, resultado)
+            st.session_state['bloques'] = bloques
+            st.session_state['conclusion'] = conclusion_text
+            st.session_state['conclusion_json'] = conclusion_json
+            st.write("DEBUG - Texto de conclusión:", repr(conclusion_text))
+            st.write("DEBUG - JSON de conclusión:", conclusion_json)
+            conclusion = conclusion_text
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with col3:
     st.markdown("**Temporalidad**", unsafe_allow_html=True)
@@ -355,7 +371,6 @@ with col3:
         </style>
     """, unsafe_allow_html=True)
 
-    # Centramos visualmente los botones
     st.markdown("""
         <style>
         div[role="radiogroup"] {
@@ -367,6 +382,15 @@ with col3:
         }
         </style>
     """, unsafe_allow_html=True)
+
+# Este bloque va FUERA de las columnas (no indentado dentro del with col2/col3)
+if 'bloques' in st.session_state:
+    bloques = st.session_state['bloques']
+    conclusion = st.session_state.get('conclusion', "")
+    conclusion_json = st.session_state.get('conclusion_json', None)
+
+st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 import matplotlib.pyplot as plt
