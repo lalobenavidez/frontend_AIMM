@@ -388,6 +388,15 @@ with col3:
     """, unsafe_allow_html=True)
 
 # Este bloque va FUERA de las columnas (no indentado dentro del with col2/col3)
+
+if st.session_state['ultimo_analisis']:
+    st.markdown("---")
+    st.write("DEBUG - Resultado crudo recibido:")
+    st.write(st.session_state['ultimo_analisis'][1])
+    st.markdown("---")
+
+
+
 if 'bloques' in st.session_state:
     bloques = st.session_state['bloques']
     conclusion = st.session_state.get('conclusion', "")
