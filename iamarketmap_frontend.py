@@ -399,8 +399,9 @@ elif 'bloques' in st.session_state:
 st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("""
-<div style='height:2px; background:linear-gradient(to right, #334155 10%, #3b82f6 90%); border-radius:2px; margin: -6px 0 24px 0;'></div>
+<div style='width:100vw; height:2.5px; background:linear-gradient(to right, #334155 10%, #3b82f6 90%); border-radius:2px; margin: -10px 0 30px 0;'></div>
 """, unsafe_allow_html=True)
+
 
 
 # ================== MOSTRAR SECCIONES ==================
