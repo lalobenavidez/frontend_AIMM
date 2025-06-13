@@ -316,27 +316,28 @@ with col2:
     if ticker != st.session_state['selected_ticker']:
         st.session_state['selected_ticker'] = ticker
 
-    # CSS SOLO para los botones dentro de este bloque
+    #  (la seleccion de color  MORADO no funciona)
     st.markdown("""
         <style>
-        div.stButton > button {
+        .morado-col2 > button {
             background-color: #a78bfa !important;
             color: white !important;
             border-radius: 12px !important;
+            border: none !important;
             width: 100%;
             font-size: 18px;
             font-weight: 600;
             margin-top: 22px;
-            border: none;
             transition: background 0.3s;
         }
-        div.stButton > button:hover {
+        .morado-col2 > button:hover {
             background-color: #7c3aed !important;
         }
         </style>
     """, unsafe_allow_html=True)
 
-    if st.button("🔮 Obtener análisis", key="analisis_btn_col2"):
+    st.markdown('<div class="morado-col2">', unsafe_allow_html=True)
+    if st.button("🤖 Obtener Análisis", key="analisis_btn_col2"):
         with st.spinner("Market Map AI is Generating the Analysis"):
             data, resultado = obtener_datos_y_analisis(ticker, selected_interval)
             bloques, conclusion_text = extract_numbered_blocks(resultado)
@@ -348,7 +349,6 @@ with col2:
             st.write("DEBUG - Texto de conclusión:", repr(conclusion_text))
             st.write("DEBUG - JSON de conclusión:", conclusion_json)
             conclusion = conclusion_text
-
     st.markdown('</div>', unsafe_allow_html=True)
 
 with col3:
