@@ -361,13 +361,8 @@ with col2:
     st.markdown('</div>', unsafe_allow_html=True)
 
 with col3:
-    st.markdown("**Temporalidad**", unsafe_allow_html=True)
-    selected_interval = st.radio(
-        "",
-        ["15M", "1H", "1D", "1W", "1M"],
-        key="interval_radio",
-        horizontal=True,
-    )
+   
+
 
     # Forzamos visualmente el botón seleccionado con CSS dinámico
     st.markdown(f"""
