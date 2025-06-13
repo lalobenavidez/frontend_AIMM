@@ -398,6 +398,10 @@ elif 'bloques' in st.session_state:
 
 st.markdown("</div>", unsafe_allow_html=True)
 
+st.markdown("""
+<div style='height:2px; background:linear-gradient(to right, #334155 10%, #3b82f6 90%); border-radius:2px; margin: -6px 0 24px 0;'></div>
+""", unsafe_allow_html=True)
+
 
 # ================== MOSTRAR SECCIONES ==================
 def seccion_html(titulo, contenido, emoji):
@@ -618,6 +622,6 @@ st.pyplot(fig)
 
 #comandos de actuallizacion en visul termina
 #git add iamarketmap_frontend.py
-#git commit -m "Mensaje de actualización"
+#git commit -m "fondo de la seccion superior"
 #git push
 
