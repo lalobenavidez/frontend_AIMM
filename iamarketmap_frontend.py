@@ -281,8 +281,12 @@ ticker_changes = {
     "TSLA": "+2.3%"
 }
 tickers = list(ticker_changes.keys())
+st.markdown(
+    "<div style='background-color:#1e2533; padding:28px 32px 32px 32px; border-radius:18px; margin-bottom:24px;'>",
+    unsafe_allow_html=True
+)
 
-st.markdown("<div class='symbol-card'>", unsafe_allow_html=True)
+#st.markdown("<div class='symbol-card'>", unsafe_allow_html=True)
 col1, col2, col3 = st.columns([5, 2, 4])
 
 with col1:
@@ -389,6 +393,7 @@ elif 'bloques' in st.session_state:
     conclusion = st.session_state.get('conclusion', "")
     conclusion_json = st.session_state.get('conclusion_json', None)
 
+st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ================== MOSTRAR SECCIONES ==================
