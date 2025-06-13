@@ -657,7 +657,7 @@ plt.yticks(fontsize=7)
 
 st.pyplot(fig)
 
-#comandos de actuallizacion en visul termina
+comandos de actuallizacion en visul termina
 #git add iamarketmap_frontend.py
 #git commit -m "fondo de la seccion superior"
 #git push
