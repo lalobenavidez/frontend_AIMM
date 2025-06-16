@@ -269,7 +269,7 @@ div[role="radiogroup"] > label > div:first-child {
 # =====================
 st.title("Análisis MARKET MAP AI")
 
-tickers = ["AAPL", "MSFT", "TSLA", "GOOGL", "NVDA","AMZN"]
+tickers = ["AAPL", "MSFT", "TSLA", "GOOGL", "NVDA","AMZN","BTC"]
 intervalos = ["1h", "1d", "1wk"]
 # --- NUEVA barra de control horizontal ---
 ticker_changes = {
@@ -651,6 +651,6 @@ st.pyplot(fig)
 
 #comandos de actuallizacion en visul termina
 #git add iamarketmap_frontend.py
-#git commit -m "fondo de la seccion superior"
+#git commit -m "quitar debugs"
 #git push
 
