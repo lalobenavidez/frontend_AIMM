@@ -279,6 +279,7 @@ ticker_changes = {
     "AMZN": "+1.7%",
     "NVDA": "-1.2",
     "TSLA": "+2.3%"
+    "BTC": "-1.6"
 }
 tickers = list(ticker_changes.keys())
 
