@@ -566,14 +566,14 @@ if st.button("🕘 Mostrar último análisis"):
     else:
         st.warning("No hay ningún análisis guardado todavía.")
 
-# --- Título y datos de ejemplo (usa tus propios datos reales) ---
-st.markdown("""
+# --- Título y datos del ticker seleccionado ---
+st.markdown(f"""
 <div style="background-color:#1e2533; padding: 28px 32px 32px 32px; border-radius: 18px; margin-bottom: 20px;">
     <div style="display:flex; justify-content:space-between; align-items:center;">
         <div>
-            <span style="font-size:2.2rem; font-weight:700; color:white;">AAPL</span>
-            <span style="font-size:2.2rem; font-weight:700; color:#4ade80; margin-left:8px;">$182.63</span><br>
-            <span style="font-size:1.1rem; color:#cbd5e1;">Apple Inc. • NASDAQ</span>
+            <span style="font-size:2.2rem; font-weight:700; color:white;">{st.session_state['selected_ticker']}</span>
+            <span style="font-size:2.2rem; font-weight:700; color:#4ade80; margin-left:8px;">—</span><br>
+            <span style="font-size:1.1rem; color:#cbd5e1;">Datos en tiempo real</span>
         </div>
         <div>
             <span style="margin-right:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">1D</span>
@@ -584,28 +584,38 @@ st.markdown("""
             <span style="margin-left:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">5A</span>
         </div>
     </div>
-""", unsafe_allow_html=True)        
+""", unsafe_allow_html=True)
 
-        # --- Gráfica tipo análisis técnico ---
-fig, ax = plt.subplots(figsize=(8.5, 4))
-ax.plot(dias, precios, color='#3b82f6', linewidth=2.7)
-ax.set_facecolor('#1e2533')
-fig.patch.set_facecolor('#1e2533')
-ax.spines['bottom'].set_color('#1e293b')
-ax.spines['top'].set_color('#1e293b')
-ax.spines['left'].set_color('#1e293b')
-ax.spines['right'].set_color('#1e293b')
-ax.tick_params(colors='#94a3b8', labelsize=7)
-ax.grid(False)
-ax.set_xlabel("")
-ax.set_ylabel("")
-plt.xticks(
-    [dias[0], dias[len(dias)//3], dias[2*len(dias)//3], dias[-1]],
-    [d.strftime("%e %b") for d in [dias[0], dias[len(dias)//3], dias[2*len(dias)//3], dias[-1]]]
-)
-plt.yticks(fontsize=7)
+# --- Graficar los datos reales del backend ---
+data_json = st.session_state.get('ultimo_analisis', [None])[0]
+if data_json:
+    df_real = pd.DataFrame(data_json)
+    df_real['timestamp'] = pd.to_datetime(df_real['timestamp'])
+    df_real.set_index('timestamp', inplace=True)
 
-st.pyplot(fig)
+    fig, ax = plt.subplots(figsize=(8.5, 4))
+    ax.plot(df_real.index, df_real['Close'], color='#3b82f6', linewidth=2.7)
+    ax.set_facecolor('#1e2533')
+    fig.patch.set_facecolor('#1e2533')
+    ax.spines['bottom'].set_color('#1e293b')
+    ax.spines['top'].set_color('#1e293b')
+    ax.spines['left'].set_color('#1e293b')
+    ax.spines['right'].set_color('#1e293b')
+    ax.tick_params(colors='#94a3b8', labelsize=7)
+    ax.grid(False)
+    ax.set_xlabel("")
+    ax.set_ylabel("")
+
+    # Mostrar solo algunas fechas para no saturar
+    xticks = df_real.index[[0, len(df_real)//3, 2*len(df_real)//3, -1]]
+    xticklabels = [d.strftime("%e %b") for d in xticks]
+    plt.xticks(xticks, xticklabels)
+    plt.yticks(fontsize=7)
+
+    st.pyplot(fig)
+else:
+    st.warning("No hay datos disponibles para graficar aún.")
+
 
 #comandos de actuallizacion en visul termina
 #git add iamarketmap_frontend.py
