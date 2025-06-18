@@ -272,7 +272,7 @@ st.title("AI MARKET MAP Analysis")
 tickers = ["AAPL", "MSFT", "TSLA", "GOOGL", "NVDA","AMZN","BTC/USD"]
 intervalos = ["1h", "1d", "1wk"]
 # --- NUEVA barra de control horizontal ---
-#ticker_changes = {
+ticker_changes = {
  #   "AAPL": "+1.2%",
   #  "MSFT": "+0.8%",
    # "GOOGL": "-0.5%",
@@ -280,7 +280,7 @@ intervalos = ["1h", "1d", "1wk"]
     #"NVDA": "-1.2",
     #"TSLA": "+2.3%",
     #"BTC/USD": "-1.6"
-#}
+}
 tickers = list(ticker_changes.keys())
 
 # Abre el panel contenedor visual, justo después del título
