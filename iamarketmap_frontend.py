@@ -583,16 +583,24 @@ st.markdown(f"""
 
 # --- Graficar los datos reales del backend ---
 data_json = st.session_state.get('ultimo_analisis', [None])[0]
-selected_interval = st.session_state.get("interval_radio", "1D")
+selected_interval = st.session_state.get("interval_radio", "1D")  # Asegura la existencia
 
 if data_json:
     df_real = pd.DataFrame(data_json)
 
-    # Asegurar columna de tiempo
-    time_col = 'timestamp' if 'timestamp' in df_real.columns else 'date'
-    df_real[time_col] = pd.to_datetime(df_real[time_col])
-    df_real.set_index(time_col, inplace=True)
+    # ✅ Normalizar nombre de columna temporal
+    if "timestamp" in df_real.columns:
+        df_real.rename(columns={"timestamp": "datetime"}, inplace=True)
+    elif "date" in df_real.columns:
+        df_real.rename(columns={"date": "datetime"}, inplace=True)
+    else:
+        st.warning("No se encontró una columna de tiempo válida para graficar.")
+        st.stop()
 
+    df_real['datetime'] = pd.to_datetime(df_real['datetime'])
+    df_real.set_index('datetime', inplace=True)
+
+    # ✅ Gráfica principal
     fig, ax = plt.subplots(figsize=(8.5, 4))
     ax.plot(df_real.index, df_real['Close'], color='#3b82f6', linewidth=2.7)
     ax.set_facecolor('#1e2533')
@@ -604,7 +612,7 @@ if data_json:
     ax.set_xlabel("")
     ax.set_ylabel("")
 
-    # Eje X dinámico según temporalidad
+    # ✅ Eje X dinámico según temporalidad
     import matplotlib.dates as mdates
     from matplotlib.dates import DateFormatter, HourLocator, DayLocator
 
@@ -620,6 +628,7 @@ if data_json:
     st.pyplot(fig)
 else:
     st.warning("No hay datos disponibles para graficar aún.")
+
 
 
 
