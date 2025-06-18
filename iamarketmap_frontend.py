@@ -537,40 +537,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# =====================
-# Mostrar último análisis guardado
-# =====================
-if st.button("🕘 Mostrar último análisis"):
-    if st.session_state['ultimo_analisis'] is not None:
-        data, resultado = st.session_state['ultimo_analisis']
-        st.markdown("<div class='card'>", unsafe_allow_html=True)
-        st.subheader("🧠 Último análisis cargado")
-        st.markdown(resultado, unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
-
-        st.markdown("<div class='card'>", unsafe_allow_html=True)
-        st.subheader("📈 Proyección de Precios")
-        precios = np.linspace(data["Close"].min(), data["Close"].max(), 30) + np.random.normal(0, 0.3, 30)
-        dias = np.arange(len(precios))
-        precio_actual = float(data["Close"].iloc[-1])
-        target = precio_actual * 1.05
-        stop_loss = precio_actual * 0.97
-
-        fig, ax = plt.subplots(figsize=(10, 4))
-        ax.plot(dias, precios, color='blue', linewidth=2)
-        ax.axhline(precio_actual, color='green', linestyle='--', label=f'Actual: ${precio_actual:.2f}')
-        ax.axhline(target, color='purple', linestyle='--', label=f'Target: ${target:.2f}')
-        ax.axhline(stop_loss, color='red', linestyle='--', label=f'Stop Loss: ${stop_loss:.2f}')
-        ax.fill_between(dias, precio_actual * 0.99, precio_actual * 1.01, color='gray', alpha=0.2, label='Zona Neutra')
-        ax.set_facecolor('#0f172a')
-        fig.patch.set_facecolor('#0f172a')
-        ax.tick_params(colors='white')
-        ax.set_title("Proyección de precios", color='white')
-        ax.legend(facecolor='#1e293b', edgecolor='white', labelcolor='white')
-        st.pyplot(fig)
-        st.markdown("</div>", unsafe_allow_html=True)
-    else:
-        st.warning("No hay ningún análisis guardado todavía.")
 
 # --- Título y datos del ticker seleccionado ---
 st.markdown(f"""
