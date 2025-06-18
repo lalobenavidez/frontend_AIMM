@@ -520,23 +520,20 @@ if bloques:
 
 
 
-
-
 # ===================== MOSTRAR RESULTADO COMPLETO (RAW) =====================
-st.markdown(
-    """
-    <div style="background-color:#1e2533; padding: 20px; border-radius: 12px; margin-top: 20px;">
-        <h3 style="color:white; margin-bottom:10px;">📝 Resultado completo de la AI</h3>
-        <div style="background-color:#334155; padding: 15px; border-radius: 10px;">
-            <pre style="color:white; font-size:14px; white-space: pre-wrap;">{}</pre>
-        </div>
-    </div>
-    """.format(
-        st.session_state['ultimo_analisis'][1] if 'ultimo_analisis' in st.session_state and st.session_state['ultimo_analisis'] else ""
-    ),
-    unsafe_allow_html=True,
-)
-
+#st.markdown(
+#    """
+#    <div style="background-color:#1e2533; padding: 20px; border-radius: 12px; margin-top: 20px;">
+#        <h3 style="color:white; margin-bottom:10px;">📝 Resultado completo de la AI</h3>
+#        <div style="background-color:#334155; padding: 15px; border-radius: 10px;">
+#            <pre style="color:white; font-size:14px; white-space: pre-wrap;">{}</pre>
+#        </div>
+#    </div>
+#    """.format(
+#        st.session_state['ultimo_analisis'][1] if 'ultimo_analisis' in st.session_state and st.session_state['ultimo_analisis'] else ""
+#    ),
+#    unsafe_allow_html=True,
+#)
 
 # --- Título y datos del ticker seleccionado ---
 st.markdown(f"""
