@@ -292,14 +292,19 @@ tickers = [label.split(" ")[0] for label in ticker_labels]
 st.markdown(
     """
     <div style='background-color:#232f45; padding:32px 36px 36px 36px; border-radius:22px; margin-bottom:32px; margin-top:12px;'>
+        <p style="color:white; font-size:18px; font-weight:500;">
+            📡 Bienvenido al análisis avanzado con inteligencia artificial. Selecciona un activo y una temporalidad para obtener una predicción precisa del mercado basada en datos reales y técnicas modernas de análisis técnico.
+        </p>
+    </div>
     """, 
     unsafe_allow_html=True
 )
 
+
 col1, col2 = st.columns([1, 1])  # Solo usamos dos columnas ahora
 
 with col1:
-    st.markdown("**Seleccionar Ticker**", unsafe_allow_html=True)
+    st.markdown("**Escoge los Criterios para obtener el Análisis del A.I.**", unsafe_allow_html=True)
 
     selected_label = st.selectbox(
         "Selecciona un Ticker",
