@@ -326,7 +326,7 @@ with col1:
 
 with col2:
     selected_interval = st.radio(
-        "**Temporalidad**",
+        "**Selecciona la Temporalidad**",
         ["15M", "1H", "1D", "1W", "1M"],
         key="interval_radio",
         horizontal=True,
