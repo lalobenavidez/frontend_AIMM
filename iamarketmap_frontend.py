@@ -583,53 +583,44 @@ st.markdown(f"""
 
 # --- Graficar los datos reales del backend ---
 data_json = st.session_state.get('ultimo_analisis', [None])[0]
-selected_interval = st.session_state.get("interval_radio", "1D")  # Asegura la existencia
+selected_interval = st.session_state.get("interval_radio", "1D")
 
 if data_json:
     df_real = pd.DataFrame(data_json)
 
-    # ✅ Normalizar nombre de columna temporal
-    if "timestamp" in df_real.columns:
-        df_real.rename(columns={"timestamp": "datetime"}, inplace=True)
-    elif "date" in df_real.columns:
-        df_real.rename(columns={"date": "datetime"}, inplace=True)
-    else:
-        st.warning("No se encontró una columna de tiempo válida para graficar.")
-        st.stop()
+    # Asegurar columna de tiempo
+    time_col = 'timestamp' if 'timestamp' in df_real.columns else 'date'
+    df_real[time_col] = pd.to_datetime(df_real[time_col])
+    df_real.set_index(time_col, inplace=True)
 
-    df_real['datetime'] = pd.to_datetime(df_real['datetime'])
-    df_real.set_index('datetime', inplace=True)
-
-    # ✅ Gráfica principal
     fig, ax = plt.subplots(figsize=(8.5, 4))
     ax.plot(df_real.index, df_real['Close'], color='#3b82f6', linewidth=2.7)
     ax.set_facecolor('#1e2533')
     fig.patch.set_facecolor('#1e2533')
-    ax.spines['bottom'].set_color('#1e293b')
-    ax.spines['top'].set_color('#1e293b')
-    ax.spines['left'].set_color('#1e293b')
-    ax.spines['right'].set_color('#1e293b')
+    for spine in ax.spines.values():
+        spine.set_color('#1e293b')
     ax.tick_params(colors='#94a3b8', labelsize=7)
     ax.grid(False)
     ax.set_xlabel("")
     ax.set_ylabel("")
 
-    # ✅ Eje X dinámico según temporalidad
-    if selected_interval in ["15M", "1H"]:
-        # Para datos intradía, mostrar hora y día
-        ax.xaxis.set_major_formatter(plt.FuncFormatter(
-            lambda x, pos: df_real.index[int(x)].strftime('%d %b\n%H:%M') if int(x) < len(df_real.index) else ''))
-        ax.set_xticks(np.linspace(0, len(df_real) - 1, 6, dtype=int))
-    else:
-        # Para temporalidades mayores: mostrar fechas clave
-        xticks = df_real.index[[0, len(df_real)//3, 2*len(df_real)//3, -1]]
-        xticklabels = [d.strftime("%e %b") for d in xticks]
-        plt.xticks(xticks, xticklabels)
+    # Eje X dinámico según temporalidad
+    import matplotlib.dates as mdates
+    from matplotlib.dates import DateFormatter, HourLocator, DayLocator
 
+    if selected_interval in ["15M", "1H"]:
+        ax.xaxis.set_major_locator(HourLocator(interval=max(1, len(df_real) // 6)))
+        ax.xaxis.set_major_formatter(DateFormatter('%d %b\n%H:%M'))
+    else:
+        ax.xaxis.set_major_locator(DayLocator(interval=max(1, len(df_real) // 4)))
+        ax.xaxis.set_major_formatter(DateFormatter('%e %b'))
+
+    fig.autofmt_xdate()
     plt.yticks(fontsize=7)
     st.pyplot(fig)
 else:
     st.warning("No hay datos disponibles para graficar aún.")
+
 
 
 
