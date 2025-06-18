@@ -591,8 +591,12 @@ st.markdown(f"""
 data_json = st.session_state.get('ultimo_analisis', [None])[0]
 if data_json:
     df_real = pd.DataFrame(data_json)
-    df_real['timestamp'] = pd.to_datetime(df_real['timestamp'])
-    df_real.set_index('timestamp', inplace=True)
+
+    # Verificamos si la columna de fecha es 'timestamp' o 'date'
+    time_col = 'timestamp' if 'timestamp' in df_real.columns else 'date'
+
+    df_real[time_col] = pd.to_datetime(df_real[time_col])
+    df_real.set_index(time_col, inplace=True)
 
     fig, ax = plt.subplots(figsize=(8.5, 4))
     ax.plot(df_real.index, df_real['Close'], color='#3b82f6', linewidth=2.7)
