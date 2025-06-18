@@ -397,96 +397,89 @@ def seccion_html(titulo, contenido, emoji):
     </div>
     """
 
-col_izq, col_der = st.columns([1.2, 1])  # Puedes ajustar la proporción si quieres
 
-with col_der:
-    st.markdown(seccion_html("Resumen Técnico de la AI", bloques.get(1, ""), "🤖"), unsafe_allow_html=True)
-    st.markdown(seccion_html("Proyección de Precios Target y Stop Loss", bloques.get(4, ""), "🎯"), unsafe_allow_html=True)
-    st.markdown(seccion_html("Probabilidad de Subida o Bajada", bloques.get(3, ""), "📊"), unsafe_allow_html=True)
-    # Agregar la conclusión al final de la evaluación si existe
-    eval_content = bloques.get(5, "")
-    if conclusion:
-        eval_content += "\n\n" + conclusion
-    st.markdown(seccion_html("Evaluación de Riesgo/Beneficio", eval_content, "⚖️"), unsafe_allow_html=True)
-    
+# Asegura que estas variables estén definidas correctamente antes de usarlas
+if 'bloques' in st.session_state:
+    bloques = st.session_state['bloques']
+    conclusion = st.session_state.get('conclusion', "")
+    conclusion_json = st.session_state.get('conclusion_json', None)
+else:
+    bloques = {}
+    conclusion = ""
+    conclusion_json = None
 
+# Renderizar solo si hay contenido en los bloques
+if bloques:
+    col_izq, col_der = st.columns([1.2, 1])  # Puedes ajustar la proporción si quieres
 
+    with col_der:
+        st.markdown(seccion_html("Resumen Técnico de la AI", bloques.get(1, ""), "🤖"), unsafe_allow_html=True)
+        st.markdown(seccion_html("Proyección de Precios Target y Stop Loss", bloques.get(4, ""), "🎯"), unsafe_allow_html=True)
+        st.markdown(seccion_html("Probabilidad de Subida o Bajada", bloques.get(3, ""), "📊"), unsafe_allow_html=True)
 
+        eval_content = bloques.get(5, "")
+        if conclusion:
+            eval_content += "\n\n" + conclusion
+        st.markdown(seccion_html("Evaluación de Riesgo/Beneficio", eval_content, "⚖️"), unsafe_allow_html=True)
 
-with col_izq:
-    st.markdown("#### 📊 Price, Target y Stop")
-    if st.button("📊 Ver gráfica de proyección"):
-        conclusion_json = st.session_state.get('conclusion_json', None)
-        if conclusion_json:
-            last = float(conclusion_json.get('last_price'))
-            target = float(conclusion_json.get('probable_target'))
-            stop = float(conclusion_json.get('probable_stop'))
+    with col_izq:
+        st.markdown("#### 📊 Price, Target y Stop")
+        if st.button("📊 Ver gráfica de proyección"):
+            if conclusion_json:
+                last = float(conclusion_json.get('last_price'))
+                target = float(conclusion_json.get('probable_target'))
+                stop = float(conclusion_json.get('probable_stop'))
 
-            last_y = 0.5  # Siempre al centro
+                last_y = 0.5  # Siempre al centro
 
-            if target > last:  # Escenario alcista
-                target_y = 0.9  # Target cerca del margen superior
-                dist_target = target - last
-                dist_stop = last - stop
-                if dist_target == 0:
-                    pos_stop = 0.1
-                else:
-                    pos_stop = last_y - (dist_stop / dist_target) * (target_y - last_y)
+                if target > last:
+                    target_y = 0.9
+                    dist_target = target - last
+                    dist_stop = last - stop
+                    pos_stop = last_y - (dist_stop / dist_target) * (target_y - last_y) if dist_target != 0 else 0.1
                     pos_stop = max(0.1, min(pos_stop, 0.49))
-            else:  # Escenario bajista
-                target_y = 0.1  # Target cerca del margen inferior
-                dist_target = last - target
-                dist_stop = stop - last
-                if dist_target == 0:
-                    pos_stop = 0.9
                 else:
-                    pos_stop = last_y - (dist_stop / dist_target) * (last_y - target_y)
+                    target_y = 0.1
+                    dist_target = last - target
+                    dist_stop = stop - last
+                    pos_stop = last_y - (dist_stop / dist_target) * (last_y - target_y) if dist_target != 0 else 0.9
                     pos_stop = min(0.9, max(pos_stop, 0.51))
 
-            y_vals = [pos_stop, last_y, target_y]
-            labels = [
-                f"Stop\n${stop:.2f}",
-                f"Last\n${last:.2f}",
-                f"Target\n${target:.2f}"
-            ]
-            colors = ['#f87171', '#60a5fa', '#22d3ee']
+                y_vals = [pos_stop, last_y, target_y]
+                labels = [f"Stop\n${stop:.2f}", f"Last\n${last:.2f}", f"Target\n${target:.2f}"]
+                colors = ['#f87171', '#60a5fa', '#22d3ee']
 
-            fig2, ax2 = plt.subplots(figsize=(4, 2))
-            for y, color, label in zip(y_vals, colors, labels):
-                ax2.axhline(y, color=color, linewidth=1, linestyle='--')
-                ax2.text(0.07, y, label, va='center', ha='left', fontsize=11, color=color, weight='bold')
+                fig2, ax2 = plt.subplots(figsize=(4, 2))
+                for y, color, label in zip(y_vals, colors, labels):
+                    ax2.axhline(y, color=color, linewidth=1, linestyle='--')
+                    ax2.text(0.07, y, label, va='center', ha='left', fontsize=11, color=color, weight='bold')
 
-            ax2.set_ylim(0, 1)
-            ax2.set_yticks([])
-            ax2.set_xticks([])
-            ax2.set_facecolor('#1e2533')
-            fig2.patch.set_facecolor('#1e2533')
-            ax2.spines['top'].set_visible(False)
-            ax2.spines['right'].set_visible(False)
-            ax2.spines['bottom'].set_visible(False)
-            ax2.spines['left'].set_visible(False)
-            st.pyplot(fig2)
+                ax2.set_ylim(0, 1)
+                ax2.set_yticks([])
+                ax2.set_xticks([])
+                ax2.set_facecolor('#1e2533')
+                fig2.patch.set_facecolor('#1e2533')
+                for spine in ax2.spines.values():
+                    spine.set_visible(False)
+                st.pyplot(fig2)
+            else:
+                st.warning("No se pudo extraer el bloque JSON de la conclusión para graficar.")
+
+        if conclusion_json:
+            rr_ratio = conclusion_json.get('risk_reward_ratio')
+            probability = conclusion_json.get('probability')
         else:
-            st.warning("No se pudo extraer el bloque JSON de la conclusión para graficar.")
+            rr_ratio = None
+            probability = None
 
+        if rr_ratio is not None:
+            st.markdown(f"""
+                <div style="background-color:#1e293b; padding:18px 16px 10px 18px; border-radius:12px; margin-top:22px;">
+                    <h4 style="color:white; margin-bottom:6px;">⚖️ Risk Reward Ratio</h4>
+                    <p style="color:#fbbf24; font-size:21px; font-weight:700; margin-bottom:0;">{rr_ratio}</p>
+                </div>
+            """, unsafe_allow_html=True)
 
-    # Bloque de métricas bajo el gráfico:
-    conclusion_json = st.session_state.get('conclusion_json', None)
-    if conclusion_json:
-        rr_ratio = conclusion_json.get('risk_reward_ratio', None)
-        probability = conclusion_json.get('probability', None)
-    else:
-        rr_ratio = None
-        probability = None
-
-    if rr_ratio is not None:
-        st.markdown("""
-            <div style="background-color:#1e293b; padding:18px 16px 10px 18px; border-radius:12px; margin-top:22px;">
-                <h4 style="color:white; margin-bottom:6px;">⚖️ Risk Reward Ratio</h4>
-                <p style="color:#fbbf24; font-size:21px; font-weight:700; margin-bottom:0;">
-                    {}</p>
-            </div>
-        """.format(rr_ratio), unsafe_allow_html=True)
 
    # Probability bar con color dinámico
     if probability is not None:
