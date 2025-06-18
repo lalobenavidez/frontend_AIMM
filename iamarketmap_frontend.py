@@ -456,6 +456,10 @@ if bloques:
                     dist_stop = stop - last
                     pos_stop = last_y + (dist_stop / dist_target) * (last_y - target_y) if dist_target != 0 else 0.9
                     pos_stop = min(0.9, max(pos_stop, 0.51))
+                    # 🔁 Nueva regla: si queda muy cerca de 0.5, lo forzamos más arriba
+                    if pos_stop < 0.55:
+                        pos_stop = 0.65
+
 
                 y_vals = [pos_stop, last_y, target_y]
                 labels = [f"Stop\n${stop:.2f}", f"Last\n${last:.2f}", f"Target\n${target:.2f}"]
