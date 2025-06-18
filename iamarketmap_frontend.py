@@ -452,8 +452,6 @@ if bloques:
                     pos_stop = max(0.1, min(pos_stop, 0.49))
                 else:
                     target_y = 0.1
-                    dist_target = last - target
-                    dist_stop = stop - last
                     pos_stop = 0.8
 
 
