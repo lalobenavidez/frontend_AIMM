@@ -425,7 +425,7 @@ if bloques:
     col_izq, col_der = st.columns([1.2, 1])  # Puedes ajustar la proporción si quieres
 
     with col_der:
-        st.markdown(seccion_html("Resumen Técnico de la AI", bloques.get(1, ""), "🤖"), unsafe_allow_html=True)
+        st.markdown(seccion_html("Resultado Completo de la AI", bloques.get(1, ""), "🤖"), unsafe_allow_html=True)
         st.markdown(seccion_html("Proyección de Precios Target y Stop Loss", bloques.get(4, ""), "🎯"), unsafe_allow_html=True)
         st.markdown(seccion_html("Probabilidad de Subida o Bajada", bloques.get(3, ""), "📊"), unsafe_allow_html=True)
 
