@@ -293,13 +293,7 @@ st.markdown(
 
 col1, col2, col3 = st.columns([5, 2, 4])
 
-# Selección de temporalidad (fuera de las columnas)
-selected_interval = st.radio(
-    "**Temporalidad**",
-    ["15M", "1H", "1D", "1W", "1M"],
-    key="interval_radio",
-    horizontal=True,
-)
+
 
 
 with col1:
