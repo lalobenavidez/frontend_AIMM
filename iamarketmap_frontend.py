@@ -269,7 +269,7 @@ div[role="radiogroup"] > label > div:first-child {
 # =====================
 st.title("AI MARKET MAP Analysis")
 
-tickers = ["AAPL", "MSFT", "TSLA", "GOOGL", "NVDA","AMZN","BTC/USD"]
+tickers = ["AAPL", "MSFT", "TSLA", "GOOGL", "NVDA","AMZN","BTC/USD","ETH/USD","SOL/USD","ADA/USD","BNB/USD"]
 intervalos = ["1h", "1d", "1wk"]
 # --- NUEVA barra de control horizontal ---
 ticker_changes = {
