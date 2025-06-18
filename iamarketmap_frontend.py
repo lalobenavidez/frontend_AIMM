@@ -273,13 +273,13 @@ tickers = ["AAPL", "MSFT", "TSLA", "GOOGL", "NVDA","AMZN","BTC/USD"]
 intervalos = ["1h", "1d", "1wk"]
 # --- NUEVA barra de control horizontal ---
 ticker_changes = {
- #   "AAPL": "+1.2%",
-  #  "MSFT": "+0.8%",
-   # "GOOGL": "-0.5%",
-    #"AMZN": "+1.7%",
-    #"NVDA": "-1.2",
-    #"TSLA": "+2.3%",
-    #"BTC/USD": "-1.6"
+    "AAPL": "+1.2%",
+    "MSFT": "+0.8%",
+    "GOOGL": "-0.5%",
+    "AMZN": "+1.7%",
+    "NVDA": "-1.2",
+    "TSLA": "+2.3%",
+    "BTC/USD": "-1.6"
 }
 tickers = list(ticker_changes.keys())
 
