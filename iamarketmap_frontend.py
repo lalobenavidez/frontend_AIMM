@@ -269,19 +269,23 @@ div[role="radiogroup"] > label > div:first-child {
 # =====================
 st.title("AI MARKET MAP Analysis")
 
-tickers = ["AAPL", "MSFT", "TSLA", "GOOGL", "NVDA","AMZN","BTC/USD","ETH/USD","SOL/USD","ADA/USD","BNB/USD"]
-intervalos = ["1h", "1d", "1wk"]
-# --- NUEVA barra de control horizontal ---
-ticker_changes = {
-    "AAPL": "+1.2%",
-    "MSFT": "+0.8%",
-    "GOOGL": "-0.5%",
-    "AMZN": "+1.7%",
-    "NVDA": "-1.2",
-    "TSLA":"",
-    "BTC/USD": "-1.6"
-}
-tickers = list(ticker_changes.keys())
+# ✅ Lista simplificada de tickers + cambios ya formateados para mostrar en el dropdown
+ticker_labels = [
+    "AAPL (+1.2%)",
+    "MSFT (+0.8%)",
+    "GOOGL (-0.5%)",
+    "AMZN (+1.7%)",
+    "NVDA (-1.2%)",
+    "TSLA",
+    "BTC/USD (-1.6%)",
+    "ETH/USD",
+    "SOL/USD",
+    "ADA/USD",
+    "BNB/USD"
+]
+
+# ✅ Esta lista solo extrae el ticker puro para lógica interna
+tickers = [label.split(" ")[0] for label in ticker_labels]
 
 # Abre el panel contenedor visual, justo después del título
 st.markdown(
@@ -296,15 +300,6 @@ col1, col2 = st.columns([1, 1])  # Solo usamos dos columnas ahora
 with col1:
     st.markdown("**Ticker**", unsafe_allow_html=True)
 
-    # Mostrar los tickers incluyendo el cambio de precio si está en ticker_changes
-    ticker_labels = [
-        f"{t} ({ticker_changes[t]})" if t in ticker_changes and ticker_changes[t] else t
-        for t in tickers
-    ]
-
-    # Mapeo inverso para recuperar el ticker seleccionado desde la etiqueta
-    ticker_map = dict(zip(ticker_labels, tickers))
-
     selected_label = st.selectbox(
         "",
         ticker_labels,
@@ -312,8 +307,9 @@ with col1:
         key="select_ticker"
     )
 
-    # Guardar el ticker correspondiente al label seleccionado
-    st.session_state['selected_ticker'] = ticker_map[selected_label]
+    # Guardar el ticker correspondiente (parte antes del espacio)
+    st.session_state['selected_ticker'] = selected_label.split(" ")[0]
+
 
 with col2:
     selected_interval = st.radio(
@@ -612,7 +608,7 @@ plt.yticks(fontsize=7)
 st.pyplot(fig)
 
 #comandos de actuallizacion en visul termina
-#git add iamarketmap_frontend.py
-#git commit -m "quitar debugs"
-#git push
+git add iamarketmap_frontend.py
+git commit -m "quitar debugs"
+git push
 
