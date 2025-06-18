@@ -302,7 +302,7 @@ with col1:
     st.markdown("**Seleccionar Ticker**", unsafe_allow_html=True)
 
     selected_label = st.selectbox(
-        "",
+        "Selecciona un Ticker",
         ticker_labels,
         index=tickers.index(st.session_state['selected_ticker']),
         key="select_ticker"
