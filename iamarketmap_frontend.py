@@ -289,16 +289,17 @@ ticker_labels = [
 tickers = [label.split(" ")[0] for label in ticker_labels]
 
 # Abre el panel contenedor visual, justo después del título
-st.markdown(
-    """
-    <div style='background-color:#232f45; padding:32px 36px 36px 36px; border-radius:22px; margin-bottom:32px; margin-top:12px;'>
-        <p style="color:white; font-size:18px; font-weight:500;">
-            ⚠️ Este análisis generado por inteligencia artificial tiene fines exclusivamente educativos e informativos. No constituye asesoramiento financiero ni una recomendación de inversión. Los mercados conllevan riesgos, y el uso de esta herramienta es responsabilidad exclusiva del usuario.
-        </p>
-    </div>
-    """, 
-    unsafe_allow_html=True
-)
+st.markdown("""
+<details style='background-color:#1e293b; padding: 16px; border-radius: 12px; margin-bottom: 24px;'>
+  <summary style='color:#facc15; font-size:16px; font-weight:600; cursor: pointer;'>⚠️ Disclaimer - Haz clic para ver</summary>
+  <p style='color:#cbd5e1; font-size:14px; margin-top:10px;'>
+    Este análisis generado por inteligencia artificial tiene fines exclusivamente educativos e informativos. 
+    No constituye asesoramiento financiero ni una recomendación de inversión. 
+    Los mercados conllevan riesgos, y el uso de esta herramienta es responsabilidad exclusiva del usuario.
+  </p>
+</details>
+""", unsafe_allow_html=True)
+
 
 
 col1, col2 = st.columns([1, 1])  # Solo usamos dos columnas ahora
