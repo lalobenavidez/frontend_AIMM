@@ -576,16 +576,10 @@ st.markdown(f"""
             <span style="font-size:2.2rem; font-weight:700; color:#4ade80; margin-left:8px;">—</span><br>
             <span style="font-size:1.1rem; color:#cbd5e1;">Datos en tiempo real</span>
         </div>
-        <div>
-            <span style="margin-right:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">1D</span>
-            <span style="margin-right:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">1S</span>
-            <span style="background:#3b82f6; padding:7px 16px; border-radius:8px; color:white; font-weight:600;">1M</span>
-            <span style="margin-left:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">3M</span>
-            <span style="margin-left:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">1A</span>
-            <span style="margin-left:8px; background:#222d3c; padding:7px 16px; border-radius:8px; color:#cbd5e1;">5A</span>
-        </div>
     </div>
+</div>
 """, unsafe_allow_html=True)
+
 
 # --- Graficar los datos reales del backend ---
 data_json = st.session_state.get('ultimo_analisis', [None])[0]
