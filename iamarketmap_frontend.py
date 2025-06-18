@@ -582,52 +582,54 @@ st.markdown(f"""
 
 
 # --- Graficar los datos reales del backend ---
+import matplotlib.dates as mdates
+from matplotlib.dates import DateFormatter, HourLocator, DayLocator
+
 data_json = st.session_state.get('ultimo_analisis', [None])[0]
-selected_interval = st.session_state.get("interval_radio", "1D")  # Asegura la existencia
+selected_interval = st.session_state.get("interval_radio", "1D")
 
 if data_json:
     df_real = pd.DataFrame(data_json)
 
-    # ✅ Normalizar nombre de columna temporal
+    # Normaliza la columna de tiempo
     if "timestamp" in df_real.columns:
         df_real.rename(columns={"timestamp": "datetime"}, inplace=True)
     elif "date" in df_real.columns:
         df_real.rename(columns={"date": "datetime"}, inplace=True)
     else:
-        st.warning("No se encontró una columna de tiempo válida para graficar.")
+        st.warning("No se encontró una columna de tiempo válida.")
         st.stop()
 
     df_real['datetime'] = pd.to_datetime(df_real['datetime'])
     df_real.set_index('datetime', inplace=True)
+    df_real.sort_index(inplace=True)  # ✅ Asegura orden temporal
 
-    # ✅ Gráfica principal
+    # Gráfico
     fig, ax = plt.subplots(figsize=(8.5, 4))
     ax.plot(df_real.index, df_real['Close'], color='#3b82f6', linewidth=2.7)
+
+    # Estética
     ax.set_facecolor('#1e2533')
     fig.patch.set_facecolor('#1e2533')
     for spine in ax.spines.values():
         spine.set_color('#1e293b')
     ax.tick_params(colors='#94a3b8', labelsize=7)
     ax.grid(False)
-    ax.set_xlabel("")
-    ax.set_ylabel("")
 
-    # ✅ Eje X dinámico según temporalidad
-    import matplotlib.dates as mdates
-    from matplotlib.dates import DateFormatter, HourLocator, DayLocator
-
+    # Eje X dinámico
     if selected_interval in ["15M", "1H"]:
-        ax.xaxis.set_major_locator(HourLocator(interval=max(1, len(df_real) // 6)))
+        ax.xaxis.set_major_locator(HourLocator(interval=1))
         ax.xaxis.set_major_formatter(DateFormatter('%d %b\n%H:%M'))
     else:
-        ax.xaxis.set_major_locator(DayLocator(interval=max(1, len(df_real) // 4)))
-        ax.xaxis.set_major_formatter(DateFormatter('%e %b'))
+        ax.xaxis.set_major_locator(DayLocator(interval=1))
+        ax.xaxis.set_major_formatter(DateFormatter('%d %b'))
 
     fig.autofmt_xdate()
     plt.yticks(fontsize=7)
     st.pyplot(fig)
 else:
     st.warning("No hay datos disponibles para graficar aún.")
+
 
 
 
