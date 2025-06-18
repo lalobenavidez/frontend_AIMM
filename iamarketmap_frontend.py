@@ -288,17 +288,23 @@ ticker_labels = [
 # ✅ Esta lista solo extrae el ticker puro para lógica interna
 tickers = [label.split(" ")[0] for label in ticker_labels]
 
-# Abre el panel contenedor visual, justo después del título
-st.markdown("""
-<details style='background-color:#1e293b; padding: 16px; border-radius: 12px; margin-bottom: 24px;'>
-  <summary style='color:#facc15; font-size:16px; font-weight:600; cursor: pointer;'>⚠️ Disclaimer - Haz clic para ver</summary>
-  <p style='color:#cbd5e1; font-size:14px; margin-top:10px;'>
-    Este análisis generado por inteligencia artificial tiene fines exclusivamente educativos e informativos. 
-    No constituye asesoramiento financiero ni una recomendación de inversión. 
-    Los mercados conllevan riesgos, y el uso de esta herramienta es responsabilidad exclusiva del usuario.
-  </p>
-</details>
-""", unsafe_allow_html=True)
+# === Disclaimer interactivo con botón para minimizar ===
+if 'disclaimer_aceptado' not in st.session_state:
+    st.session_state['disclaimer_aceptado'] = False
+
+if not st.session_state['disclaimer_aceptado']:
+    with st.expander("⚠️ Disclaimer Legal - Por favor, léelo antes de continuar", expanded=True):
+        st.markdown("""
+        <p style='color:#cbd5e1; font-size:15px;'>
+        Este análisis generado por inteligencia artificial tiene fines exclusivamente educativos e informativos.<br>
+        No constituye asesoramiento financiero ni una recomendación de inversión.<br>
+        Los mercados conllevan riesgos, y el uso de esta herramienta es responsabilidad exclusiva del usuario.
+        </p>
+        """, unsafe_allow_html=True)
+
+        if st.button("✅ Aceptar y minimizar"):
+            st.session_state['disclaimer_aceptado'] = True
+
 
 
 
