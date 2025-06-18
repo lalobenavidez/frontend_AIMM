@@ -552,7 +552,11 @@ st.markdown(f"""
 import matplotlib.dates as mdates
 from matplotlib.dates import DateFormatter, HourLocator, DayLocator
 
-data_json = st.session_state.get('ultimo_analisis', [None])[0]
+# Asegura que haya datos antes de intentar acceder
+if 'ultimo_analisis' in st.session_state and st.session_state['ultimo_analisis']:
+    data_json = st.session_state['ultimo_analisis'][0]
+else:
+    data_json = None  # o un dict vacío si lo necesitas así
 selected_interval = st.session_state.get("interval_radio", "1D")
 
 if data_json:
