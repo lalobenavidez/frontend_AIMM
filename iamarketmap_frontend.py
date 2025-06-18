@@ -291,36 +291,31 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-col1, col2, col3 = st.columns([5, 2, 4])
-
-
-
+col1, col2 = st.columns([1, 1])  # Solo usamos dos columnas ahora
 
 with col1:
-    st.markdown("**Activos**", unsafe_allow_html=True)
-    for symbol, change in ticker_changes.items():
-        css_class = "symbol-button"
-        if symbol == st.session_state['selected_ticker']:
-            css_class += " symbol-selected"
-        elif "-" in change:
-            css_class += " negative"
-        else:
-            css_class += " positive"
-        if st.button(f"{symbol} {change}", key=f"btn_{symbol}"):
-            st.session_state['selected_ticker'] = symbol
-
-with col2:
     st.markdown("**Ticker**", unsafe_allow_html=True)
-    ticker = st.selectbox(
+
+    # Mostrar los tickers incluyendo el cambio de precio si está en ticker_changes
+    ticker_labels = [
+        f"{t} ({ticker_changes[t]})" if t in ticker_changes and ticker_changes[t] else t
+        for t in tickers
+    ]
+
+    # Mapeo inverso para recuperar el ticker seleccionado desde la etiqueta
+    ticker_map = dict(zip(ticker_labels, tickers))
+
+    selected_label = st.selectbox(
         "",
-        tickers,
+        ticker_labels,
         index=tickers.index(st.session_state['selected_ticker']),
         key="select_ticker"
     )
-    if ticker != st.session_state['selected_ticker']:
-        st.session_state['selected_ticker'] = ticker
 
-with col3:
+    # Guardar el ticker correspondiente al label seleccionado
+    st.session_state['selected_ticker'] = ticker_map[selected_label]
+
+with col2:
     selected_interval = st.radio(
         "**Temporalidad**",
         ["15M", "1H", "1D", "1W", "1M"],
@@ -341,7 +336,7 @@ with col3:
             st.session_state['conclusion_json'] = conclusion_json
             conclusion = conclusion_text
 
-    # Estilo visual dinámico para el botón seleccionado de temporalidad
+    # Estilo visual dinámico para la opción seleccionada
     st.markdown(f"""
         <style>
         div[role="radiogroup"] > label:nth-child({['15M','1H','1D','1W','1M'].index(selected_interval)+1}) {{
@@ -351,6 +346,7 @@ with col3:
         }}
         </style>
     """, unsafe_allow_html=True)
+
 
     st.markdown("""
         <style>
