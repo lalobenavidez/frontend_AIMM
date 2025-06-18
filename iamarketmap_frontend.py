@@ -90,7 +90,8 @@ def obtener_datos_y_analisis(ticker, selected_interval):
         if response.status_code == 200:
             data = response.json()
             resultado = data.get("resultado", "")
-            return None, resultado  # El primer valor (data) es None, a menos que necesites reconstruir un DataFrame en el frontend
+            return data.get("data", []), resultado
+  # El primer valor (data) es None, a menos que necesites reconstruir un DataFrame en el frontend
         else:
             return None, f"Error en API: {response.text}"
     except Exception as e:
