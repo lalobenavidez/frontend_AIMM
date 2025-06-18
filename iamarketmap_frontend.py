@@ -272,13 +272,13 @@ st.title("AI MARKET MAP Analysis")
 
 # ✅ Lista simplificada de tickers + cambios ya formateados para mostrar en el dropdown
 ticker_labels = [
-    "AAPL (+1.2%)",
-    "MSFT (+0.8%)",
-    "GOOGL (-0.5%)",
-    "AMZN (+1.7%)",
-    "NVDA (-1.2%)",
+    "AAPL",
+    "MSFT",
+    "GOOGL",
+    "AMZN",
+    "NVDA",
     "TSLA",
-    "BTC/USD (-1.6%)",
+    "BTC/USD",
     "ETH/USD",
     "SOL/USD",
     "ADA/USD",
