@@ -293,7 +293,7 @@ st.markdown(
     """
     <div style='background-color:#232f45; padding:32px 36px 36px 36px; border-radius:22px; margin-bottom:32px; margin-top:12px;'>
         <p style="color:white; font-size:18px; font-weight:500;">
-            📡 Bienvenido al análisis avanzado con inteligencia artificial. Selecciona un activo y una temporalidad para obtener una predicción precisa del mercado basada en datos reales y técnicas modernas de análisis técnico.
+            ⚠️ Este análisis generado por inteligencia artificial tiene fines exclusivamente educativos e informativos. No constituye asesoramiento financiero ni una recomendación de inversión. Los mercados conllevan riesgos, y el uso de esta herramienta es responsabilidad exclusiva del usuario.
         </p>
     </div>
     """, 
