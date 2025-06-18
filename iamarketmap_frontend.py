@@ -503,7 +503,7 @@ if bloques:
 
             st.markdown(f"""
                 <div style="background-color:#1e293b; padding:18px 16px 20px 18px; border-radius:12px; margin-top:22px;">
-                    <h4 style="color:white; margin-bottom:6px;">📊 Probability</h4>
+                    <h4 style="color:white; margin-bottom:6px;">📊 Probability — {tendencia}</h4>
                     <div style="background-color:#334155; border-radius:7px; height:30px; width:100%; margin-bottom:8px; position:relative;">
                         <div style="height:100%; width:{prob}%; background:{bar_color}; border-radius:7px;"></div>
                         <div style="position:absolute; left:0; top:0; width:100%; height:30px; display:flex; align-items:center; justify-content:center; color:white; font-size:19px; font-weight:700;">
