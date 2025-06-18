@@ -583,15 +583,24 @@ st.markdown(f"""
 
 # --- Graficar los datos reales del backend ---
 data_json = st.session_state.get('ultimo_analisis', [None])[0]
+selected_interval = st.session_state.get("interval_radio", "1D")  # Asegura la existencia
+
 if data_json:
     df_real = pd.DataFrame(data_json)
 
-    # Verificamos si la columna de fecha es 'timestamp' o 'date'
-    time_col = 'timestamp' if 'timestamp' in df_real.columns else 'date'
+    # ✅ Normalizar nombre de columna temporal
+    if "timestamp" in df_real.columns:
+        df_real.rename(columns={"timestamp": "datetime"}, inplace=True)
+    elif "date" in df_real.columns:
+        df_real.rename(columns={"date": "datetime"}, inplace=True)
+    else:
+        st.warning("No se encontró una columna de tiempo válida para graficar.")
+        st.stop()
 
-    df_real[time_col] = pd.to_datetime(df_real[time_col])
-    df_real.set_index(time_col, inplace=True)
+    df_real['datetime'] = pd.to_datetime(df_real['datetime'])
+    df_real.set_index('datetime', inplace=True)
 
+    # ✅ Gráfica principal
     fig, ax = plt.subplots(figsize=(8.5, 4))
     ax.plot(df_real.index, df_real['Close'], color='#3b82f6', linewidth=2.7)
     ax.set_facecolor('#1e2533')
@@ -605,15 +614,23 @@ if data_json:
     ax.set_xlabel("")
     ax.set_ylabel("")
 
-    # Mostrar solo algunas fechas para no saturar
-    xticks = df_real.index[[0, len(df_real)//3, 2*len(df_real)//3, -1]]
-    xticklabels = [d.strftime("%e %b") for d in xticks]
-    plt.xticks(xticks, xticklabels)
-    plt.yticks(fontsize=7)
+    # ✅ Eje X dinámico según temporalidad
+    if selected_interval in ["15M", "1H"]:
+        # Para datos intradía, mostrar hora y día
+        ax.xaxis.set_major_formatter(plt.FuncFormatter(
+            lambda x, pos: df_real.index[int(x)].strftime('%d %b\n%H:%M') if int(x) < len(df_real.index) else ''))
+        ax.set_xticks(np.linspace(0, len(df_real) - 1, 6, dtype=int))
+    else:
+        # Para temporalidades mayores: mostrar fechas clave
+        xticks = df_real.index[[0, len(df_real)//3, 2*len(df_real)//3, -1]]
+        xticklabels = [d.strftime("%e %b") for d in xticks]
+        plt.xticks(xticks, xticklabels)
 
+    plt.yticks(fontsize=7)
     st.pyplot(fig)
 else:
     st.warning("No hay datos disponibles para graficar aún.")
+
 
 
 #comandos de actuallizacion en visul termina
