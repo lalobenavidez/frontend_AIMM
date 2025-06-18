@@ -267,7 +267,7 @@ div[role="radiogroup"] > label > div:first-child {
 # =====================
 # Encabezado y selección
 # =====================
-st.title("Análisis MARKET MAP AI")
+st.title("AI MARKET MAP Analysis")
 
 tickers = ["AAPL", "MSFT", "TSLA", "GOOGL", "NVDA","AMZN","BTC/USD"]
 intervalos = ["1h", "1d", "1wk"]
@@ -326,30 +326,19 @@ with col2:
     if ticker != st.session_state['selected_ticker']:
         st.session_state['selected_ticker'] = ticker
 
-    #  (la seleccion de color  MORADO no funciona)
-    st.markdown("""
-        <style>
-        .morado-col2 > button {
-            background-color: #a78bfa !important;
-            color: white !important;
-            border-radius: 12px !important;
-            border: none !important;
-            width: 100%;
-            font-size: 18px;
-            font-weight: 600;
-            margin-top: 22px;
-            transition: background 0.3s;
-        }
-        .morado-col2 > button:hover {
-            background-color: #7c3aed !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+with col3:
+    selected_interval = st.radio(
+        "**Temporalidad**",
+        ["15M", "1H", "1D", "1W", "1M"],
+        key="interval_radio",
+        horizontal=True,
+    )
 
-    st.markdown('<div class="morado-col2">', unsafe_allow_html=True)
-    if st.button("🤖 Obtener Análisis", key="analisis_btn_col2"):
+    # Botón "Obtener Análisis" debajo de la temporalidad
+    if st.button("🤖 Clic Aquí para Obtener Análisis", key="analisis_btn_col3"):
         with st.spinner("Market Map AI is Generating the Analysis"):
-            data, resultado = obtener_datos_y_analisis(ticker, selected_interval)
+            data, resultado = obtener_datos_y_analisis(
+                st.session_state['selected_ticker'], selected_interval)
             bloques, conclusion_text = extract_numbered_blocks(resultado)
             conclusion_json = extraer_conclusion_json(resultado)
             st.session_state['ultimo_analisis'] = (data, resultado)
@@ -357,13 +346,8 @@ with col2:
             st.session_state['conclusion'] = conclusion_text
             st.session_state['conclusion_json'] = conclusion_json
             conclusion = conclusion_text
-    st.markdown('</div>', unsafe_allow_html=True)
 
-with col3:
-   
-
-
-    # Forzamos visualmente el botón seleccionado con CSS dinámico
+    # Estilo visual dinámico para el botón seleccionado de temporalidad
     st.markdown(f"""
         <style>
         div[role="radiogroup"] > label:nth-child({['15M','1H','1D','1W','1M'].index(selected_interval)+1}) {{
@@ -385,19 +369,6 @@ with col3:
         }
         </style>
     """, unsafe_allow_html=True)
-
-
-
-if 'bloques' in st.session_state:
-    bloques = st.session_state['bloques']
-    conclusion = st.session_state.get('conclusion', "")
-    conclusion_json = st.session_state.get('conclusion_json', None)
-else:
-    bloques = {}
-    conclusion = ""
-    conclusion_json = None
-
-st.markdown("</div>", unsafe_allow_html=True)
 
 import matplotlib.pyplot as plt
 
