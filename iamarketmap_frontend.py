@@ -299,7 +299,7 @@ st.markdown(
 col1, col2 = st.columns([1, 1])  # Solo usamos dos columnas ahora
 
 with col1:
-    st.markdown("**Ticker**", unsafe_allow_html=True)
+    st.markdown("**Seleccionar Ticker**", unsafe_allow_html=True)
 
     selected_label = st.selectbox(
         "",
@@ -322,7 +322,7 @@ with col2:
 
     # Botón "Obtener Análisis" debajo de la temporalidad
     if st.button("🤖 Clic Aquí para Obtener Análisis", key="analisis_btn_col3"):
-        with st.spinner("Market Map AI is Generating the Analysis"):
+        with st.spinner("The AI Market Map is Generating the Analysis"):
             data, resultado = obtener_datos_y_analisis(
                 st.session_state['selected_ticker'], selected_interval)
             bloques, conclusion_text = extract_numbered_blocks(resultado)
