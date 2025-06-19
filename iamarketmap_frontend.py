@@ -466,7 +466,8 @@ if bloques:
                 </div>
             """, unsafe_allow_html=True)
 
-        if st.button("📊 Ver gráfica de proyección") and last is not None:
+        if last is not None:
+            st.markdown("#### 📊 Proyección Técnica (Stop, Last y Target)")
             last_y = 0.5
 
             if target > last:
