@@ -348,7 +348,7 @@ with col2:
     # Estilo visual dinámico para la opción seleccionada
     st.markdown(f"""
         <style>
-        div[role="radiogroup"] > label:nth-child({['15M','1H','1D','1W','1M'].index(selected_interval)+1}) {{
+        div[role="radiogroup"] > label:nth-child({['15M','1H','1D'].index(selected_interval)+1}) {{
             background-color: #3b82f6 !important;
             color: white !important;
             font-weight: 700;
