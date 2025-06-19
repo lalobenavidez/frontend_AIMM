@@ -348,7 +348,7 @@ with col2:
     # Estilo visual dinámico para la opción seleccionada
     st.markdown(f"""
         <style>
-        div[role="radiogroup"] > label:nth-child({['15M','1H','1D'].index(selected_interval)+1}) {{
+        div[role="radiogroup"] > label:nth-child({['15M','1H','1D','1W'].index(selected_interval)+1}) {{
             background-color: #3b82f6 !important;
             color: white !important;
             font-weight: 700;
@@ -382,7 +382,6 @@ precios = np.cumsum(np.random.normal(0.6, 1.1, len(dias))) + 164
 
 
 
-# Justo antes de los bloques de sección:
 # Cuando obtienes el resultado, haz:
 
 
@@ -548,7 +547,6 @@ st.markdown(f"""
 
 
 
-
 # --- Graficar los datos reales del backend ---
 import matplotlib.dates as mdates
 from matplotlib.dates import DateFormatter, HourLocator, DayLocator
@@ -601,9 +599,6 @@ if data_json:
     st.pyplot(fig)
 else:
     st.warning("No hay datos disponibles para graficar aún.")
-
-
-
 
 
 
