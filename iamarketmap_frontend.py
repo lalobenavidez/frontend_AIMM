@@ -533,7 +533,7 @@ st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
 
 
 # --- Título y datos del ticker seleccionado ---
-selected_interval = st.session_state.get("interval_radio", "1D")
+selected_interval = st.session_state["interval_radio"] if "interval_radio" in st.session_state else "1D"
 
 st.markdown(f"""
 <div style="background-color:#1e2533; padding: 28px 32px 32px 32px; border-radius: 18px; margin-bottom: 20px;">
@@ -548,6 +548,7 @@ st.markdown(f"""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
