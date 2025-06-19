@@ -533,17 +533,22 @@ st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
 
 
 # --- Título y datos del ticker seleccionado ---
+selected_interval = st.session_state.get("interval_radio", "1D")
+
 st.markdown(f"""
 <div style="background-color:#1e2533; padding: 28px 32px 32px 32px; border-radius: 18px; margin-bottom: 20px;">
     <div style="display:flex; justify-content:space-between; align-items:center;">
         <div>
             <span style="font-size:2.2rem; font-weight:700; color:white;">{st.session_state['selected_ticker']}</span>
             <span style="font-size:2.2rem; font-weight:700; color:#4ade80; margin-left:8px;">—</span><br>
-            <span style="font-size:1.1rem; color:#cbd5e1;">Datos en tiempo real</span>
+            <span style="font-size:1.1rem; color:#cbd5e1;">
+                Datos en tiempo real — Temporalidad: <span style="color:#38bdf8;">{selected_interval}</span>
+            </span>
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 # --- Graficar los datos reales del backend ---
