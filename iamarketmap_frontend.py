@@ -327,7 +327,7 @@ with col1:
 with col2:
     selected_interval = st.radio(
         "**Selecciona la Temporalidad**",
-        ["15M", "1H", "1D", "1W", "1M"],
+        ["15M", "1H", "1D"],
         key="interval_radio",
         horizontal=True,
     )
@@ -423,25 +423,36 @@ else:
 if bloques:
     col_izq, col_der = st.columns([1.2, 1])  # Puedes ajustar la proporción si quieres
 
+    # -------- COLUMNA DERECHA (texto AI) --------
     with col_der:
-        st.markdown(seccion_html("Resultado Completo de la AI", bloques.get(1, ""), "🤖"), unsafe_allow_html=True)
-        st.markdown(seccion_html("Proyección de Precios Target y Stop Loss", bloques.get(4, ""), "🎯"), unsafe_allow_html=True)
-        st.markdown(seccion_html("Evaluación de Riesgo/Beneficio", bloques.get(5, ""), "⚖️"), unsafe_allow_html=True)
+        st.markdown(
+            seccion_html("Resultado Completo de la AI", bloques.get(1, ""), "🤖"),
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            seccion_html("Proyección de Precios Target y Stop Loss", bloques.get(4, ""), "🎯"),
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            seccion_html("Evaluación de Riesgo/Beneficio", bloques.get(5, ""), "⚖️"),
+            unsafe_allow_html=True,
+        )
 
+    # -------- COLUMNA IZQUIERDA (prob, gráfico, RR) --------
     with col_izq:
-        st.markdown("#### 📊 Price, Target y Stop")
-
+        # ===== Preparar variables =====
         if conclusion_json:
-            last = float(conclusion_json.get('last_price'))
-            target = float(conclusion_json.get('probable_target'))
-            stop = float(conclusion_json.get('probable_stop'))
-            rr_ratio = conclusion_json.get('risk_reward_ratio')
-            probability = conclusion_json.get('probability')
+            last = float(conclusion_json.get("last_price"))
+            target = float(conclusion_json.get("probable_target"))
+            stop = float(conclusion_json.get("probable_stop"))
+            rr_ratio = conclusion_json.get("risk_reward_ratio")
+            probability = conclusion_json.get("probability")
             tendencia = "📈 Alcista" if target > last else "📉 Bajista"
         else:
             last = target = stop = rr_ratio = probability = None
             tendencia = ""
 
+        # 1️⃣ PROBABILIDAD
         if probability is not None:
             prob = float(probability)
             if prob < 50:
@@ -453,7 +464,8 @@ if bloques:
             else:
                 bar_color = "#22d46c"
 
-            st.markdown(f"""
+            st.markdown(
+                f"""
                 <div style="background-color:#1e293b; padding:18px 16px 20px 18px; border-radius:12px; margin-top:10px;">
                     <h4 style="color:white; margin-bottom:6px;">📊 Probability — {tendencia}</h4>
                     <div style="background-color:#334155; border-radius:7px; height:30px; width:100%; margin-bottom:8px; position:relative;">
@@ -463,49 +475,76 @@ if bloques:
                         </div>
                     </div>
                 </div>
-            """, unsafe_allow_html=True)
+                """,
+                unsafe_allow_html=True,
+            )
 
+        # 2️⃣ GRÁFICO DE PRICE / TARGET / STOP
         if last is not None:
-            st.markdown("#### 📊 Proyección Técnica (Stop, Last y Target)")
+            st.markdown("#### 📊 Price, Target y Stop")  # encabezado del gráfico
             last_y = 0.5
 
             if target > last:
                 target_y = 0.9
                 dist_target = target - last
                 dist_stop = last - stop
-                pos_stop = last_y - (dist_stop / dist_target) * (target_y - last_y) if dist_target != 0 else 0.1
+                pos_stop = (
+                    last_y - (dist_stop / dist_target) * (target_y - last_y)
+                    if dist_target != 0
+                    else 0.1
+                )
                 pos_stop = max(0.1, min(pos_stop, 0.49))
             else:
                 target_y = 0.1
                 pos_stop = 0.8
 
             y_vals = [pos_stop, last_y, target_y]
-            labels = [f"Stop\n${stop:.3f}", f"Last\n${last:.2f}", f"Target\n${target:.3f}"]
-            colors = ['#f87171', '#60a5fa', '#22d3ee']
+            labels = [
+                f"Stop\n${stop:.3f}",
+                f"Last\n${last:.2f}",
+                f"Target\n${target:.3f}",
+            ]
+            colors = ["#f87171", "#60a5fa", "#22d3ee"]
 
             fig2, ax2 = plt.subplots(figsize=(4, 2))
             for y, color, label in zip(y_vals, colors, labels):
-                ax2.axhline(y, color=color, linewidth=1, linestyle='--')
-                ax2.text(0.07, y, label, va='center', ha='left', fontsize=10, color=color, weight='bold')
+                ax2.axhline(y, color=color, linewidth=1, linestyle="--")
+                ax2.text(
+                    0.07,
+                    y,
+                    label,
+                    va="center",
+                    ha="left",
+                    fontsize=10,
+                    color=color,
+                    weight="bold",
+                )
 
             ax2.set_ylim(0, 1)
             ax2.set_yticks([])
             ax2.set_xticks([])
-            ax2.set_facecolor('#1e2533')
-            fig2.patch.set_facecolor('#1e2533')
+            ax2.set_facecolor("#1e2533")
+            fig2.patch.set_facecolor("#1e2533")
             for spine in ax2.spines.values():
                 spine.set_visible(False)
             st.pyplot(fig2)
-        elif last is None:
-            st.warning("No se pudo extraer el bloque JSON de la conclusión para graficar.")
+        else:
+            st.warning(
+                "No se pudo extraer el bloque JSON de la conclusión para graficar."
+            )
 
+        # 3️⃣ RISK-REWARD RATIO
         if rr_ratio is not None:
-            st.markdown(f"""
+            st.markdown(
+                f"""
                 <div style="background-color:#1e293b; padding:18px 16px 10px 18px; border-radius:12px; margin-top:22px;">
                     <h4 style="color:white; margin-bottom:6px;">⚖️ Risk Reward Ratio</h4>
                     <p style="color:#fbbf24; font-size:21px; font-weight:700; margin-bottom:0;">{rr_ratio}</p>
                 </div>
-            """, unsafe_allow_html=True)
+                """,
+                unsafe_allow_html=True,
+            )
+
 
 
 
