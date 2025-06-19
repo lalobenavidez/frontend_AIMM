@@ -542,7 +542,7 @@ st.markdown(f"""
             <span style="font-size:2.2rem; font-weight:700; color:white;">{st.session_state['selected_ticker']}</span>
             <span style="font-size:2.2rem; font-weight:700; color:#4ade80; margin-left:8px;">—</span><br>
             <span style="font-size:1.1rem; color:#cbd5e1;">
-                Temporalidad: <span style="color:#38bdf8;">{selected_interval}</span>
+                Período: <span style="color:#38bdf8;">{selected_interval}</span>
             </span>
         </div>
     </div>
