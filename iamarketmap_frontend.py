@@ -462,13 +462,13 @@ if bloques:
                 pos_stop = 0.8
 
             y_vals = [pos_stop, last_y, target_y]
-            labels = [f"Stop\n${stop:.2f}", f"Last\n${last:.2f}", f"Target\n${target:.2f}"]
+            labels = [f"Stop\n${stop:.3f}", f"Last\n${last:.2f}", f"Target\n${target:.3f}"]
             colors = ['#f87171', '#60a5fa', '#22d3ee']
 
             fig2, ax2 = plt.subplots(figsize=(4, 2))
             for y, color, label in zip(y_vals, colors, labels):
                 ax2.axhline(y, color=color, linewidth=1, linestyle='--')
-                ax2.text(0.07, y, label, va='center', ha='left', fontsize=11, color=color, weight='bold')
+                ax2.text(0.07, y, label, va='center', ha='left', fontsize=10, color=color, weight='bold')
 
             ax2.set_ylim(0, 1)
             ax2.set_yticks([])
